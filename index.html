@@ -231,6 +231,18 @@
                     </div>
                 </div>
 
+                <!-- Feature 4: Mode Pencatatan Cepat via Teks Alami (AI Natural Language Input Card) -->
+                <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
+                    <div class="flex items-center gap-2 text-indigo-400 text-xs font-extrabold">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Pencatatan Cepat Teks Alami (AI Input)
+                    </div>
+                    <p class="text-[10px] text-slate-400 leading-relaxed">Ketik bebas transaksi Anda, misal: <code class="text-indigo-300">Makan siang 35000</code> atau <code class="text-emerald-400">Terima gaji 5000000</code></p>
+                    <div class="flex gap-2">
+                        <input type="text" id="aiNaturalInputText" placeholder="Contoh: Beli bensin 50rb" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none">
+                        <button onclick="processNaturalLanguageInput()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-lg active:scale-95">Proses</button>
+                    </div>
+                </div>
+
                 <!-- Wishlist Preview Widget di Home -->
                 <div class="glass-card p-5 rounded-3xl space-y-3">
                     <div class="flex justify-between items-center">
@@ -406,6 +418,33 @@
                     </button>
                 </div>
 
+                <!-- Feature 3: Toko Lencana Gamifikasi (Rewards Shop) -->
+                <div class="glass-card p-5 rounded-3xl space-y-3 border border-amber-500/30 bg-gradient-to-r from-amber-950/20 to-purple-950/20">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xs uppercase tracking-wider text-amber-300 flex items-center gap-2">
+                            <i class="fa-solid fa-store"></i> Toko Lencana & Tema (Rewards Shop)
+                        </h3>
+                        <span id="shopStreakBalance" class="text-[10px] bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full font-bold">0 Hari Streak</span>
+                    </div>
+                    <p class="text-[10px] text-slate-300">Tukar hari streak kedisiplinan Anda untuk membuka status lencana eksklusif!</p>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-2">
+                            <div>
+                                <span class="text-xs font-extrabold text-indigo-400 block">👑 Crown Lord</span>
+                                <span class="text-[9px] text-slate-400">Syarat: 7 Hari Streak</span>
+                            </div>
+                            <button onclick="unlockReward('Crown Lord', 7)" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-1.5 rounded-xl text-[10px] font-bold transition">Klaim</button>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-2">
+                            <div>
+                                <span class="text-xs font-extrabold text-emerald-400 block">💎 Diamond Elite</span>
+                                <span class="text-[9px] text-slate-400">Syarat: 30 Hari Streak</span>
+                            </div>
+                            <button onclick="unlockReward('Diamond Elite', 30)" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 rounded-xl text-[10px] font-bold transition">Klaim</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Vaults Full Management -->
                 <div class="glass-card p-5 rounded-3xl space-y-4">
                     <div class="flex justify-between items-center">
@@ -448,7 +487,7 @@
                     <p class="text-xs text-slate-400">Kode PIN, Cloud Sync, Push Notification, & laporan</p>
                 </div>
 
-                <!-- Feature 3: Sinkronisasi Cloud -->
+                <!-- Cloud Sync -->
                 <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base">
@@ -464,7 +503,7 @@
                     </button>
                 </div>
 
-                <!-- Feature 4: Web Push Notification -->
+                <!-- Web Push Notification -->
                 <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base">
@@ -791,6 +830,7 @@
         let subscriptions = JSON.parse(localStorage.getItem('ultimate_subscriptions')) || [];
         let familyName = localStorage.getItem('ultimate_familyName') || 'Mode Personal';
         let savedPin = localStorage.getItem('ultimate_pin') || '';
+        let unlockedRewards = JSON.parse(localStorage.getItem('ultimate_rewards')) || [];
         let isPrivacyMode = false;
 
         let expenseChartFull = null;
@@ -810,18 +850,97 @@
             updateUI();
         });
 
-        // Feature 3: Cloud Sync Logic
+        // Feature 3: Toko Lencana Gamifikasi (Rewards Shop) Logic
+        function unlockReward(rewardName, requiredDays) {
+            let uniqueDays = [...new Set(transactions.map(t => t.rawDate))].length;
+            if(uniqueDays >= requiredDays) {
+                if(!unlockedRewards.includes(rewardName)) {
+                    unlockedRewards.push(rewardName);
+                    localStorage.setItem('ultimate_rewards', JSON.stringify(unlockedRewards));
+                    alert(`🎉 Selamat! Anda berhasil membuka lencana "${rewardName}"!`);
+                } else {
+                    alert('Lencana ini sudah pernah Anda buka sebelumnya.');
+                }
+            } else {
+                alert(`❌ Streak Anda belum cukup (${uniqueDays}/${requiredDays} hari). Terus tingkatkan kedisiplinan!`);
+            }
+        }
+
+        // Feature 4: Mode Pencatatan Cepat via Teks Alami (AI Natural Language Input Logic)
+        function processNaturalLanguageInput() {
+            const inputVal = document.getElementById('aiNaturalInputText').value.trim();
+            if(!inputVal) {
+                alert('Silakan ketik catatan transaksi terlebih dahulu.');
+                return;
+            }
+
+            let type = 'pengeluaran';
+            const lower = inputVal.toLowerCase();
+            if(lower.includes('terima') || lower.includes('gaji') || lower.includes('masuk') || lower.includes('dapat')) {
+                type = 'pemasukan';
+            }
+
+            // Extract numbers (supporting 'rb' -> *1000, 'jt' -> *1000000)
+            let cleanStr = lower.replace(/\./g, '').replace(/rp/g, '');
+            let amount = 0;
+            const matchNum = cleanStr.match(/\d+/);
+            if(matchNum) {
+                amount = parseInt(matchNum[0]);
+                if(cleanStr.includes('rb') || cleanStr.includes('ribu')) amount *= 1000;
+                if(cleanStr.includes('jt') || cleanStr.includes('juta')) amount *= 1000000;
+            }
+
+            if(amount <= 0) {
+                alert('Nominal angka tidak terdeteksi dengan jelas. Gunakan angka standar (misal: 35000 atau 50rb).');
+                return;
+            }
+
+            // Auto-categorization
+            let category = 'Umum';
+            if(lower.includes('makan') || lower.includes('makanan') || lower.includes('kopi') || lower.includes('mimin')) category = 'Makanan';
+            else if(lower.includes('bensin') || lower.includes('transport') || lower.includes('gojek') || lower.includes('grab')) category = 'Transportasi';
+            else if(lower.includes('belanja') || lower.includes('beli') || lower.includes('shopee')) category = 'Belanja';
+            else if(lower.includes('listrik') || lower.includes('wifi') || lower.includes('tagihan')) category = 'Tagihan';
+            else if(lower.includes('gaji') || lower.includes('bonus')) category = 'Investasi';
+
+            const formattedDate = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            transactions.push({
+                id: Date.now(),
+                type,
+                walletId: wallets[0].id,
+                description: inputVal,
+                amount,
+                category,
+                rawDate: getLocalDateString(),
+                date: formattedDate
+            });
+
+            wallets = wallets.map(w => {
+                if(w.id === wallets[0].id) {
+                    w.balance = type === 'pemasukan' ? w.balance + amount : w.balance - amount;
+                }
+                return w;
+            });
+
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
+            document.getElementById('aiNaturalInputText').value = '';
+            saveAndRefresh();
+            alert(`✨ Berhasil mencatat: "${inputVal}" (${type.toUpperCase()} Rp${amount.toLocaleString('id-ID')})`);
+        }
+
+        // Cloud Sync Logic
         function syncToCloud() {
             const cloudPayload = {
                 transactions, wallets, vaults, creditCards, monthlyBudget,
-                wishlists, assets, categories, subscriptions, familyName, savedPin,
+                wishlists, assets, categories, subscriptions, familyName, savedPin, unlockedRewards,
                 timestamp: Date.now()
             };
             localStorage.setItem('ultimate_cloud_backup', JSON.stringify(cloudPayload));
             alert('☁️ Sinkronisasi Cloud Berhasil! Data Anda tersimpan aman di penyimpanan awan.');
         }
 
-        // Feature 4: Web Push Notification Logic
+        // Web Push Notification Logic
         function enableBillNotifications() {
             if (!("Notification" in window)) {
                 alert("Browser Anda tidak mendukung Web Notification.");
@@ -1305,10 +1424,14 @@
 
             let uniqueDays = [...new Set(transactions.map(t => t.rawDate))].length;
             document.getElementById('streakTitleText').innerText = `Streak Aktif: ${uniqueDays} Hari Transaksi`;
+            const shopStreakEl = document.getElementById('shopStreakBalance');
+            if(shopStreakEl) shopStreakEl.innerText = `${uniqueDays} Hari Streak`;
+
             let badge = "Pemula";
             if(uniqueDays >= 7) badge = "Disiplin Bronze";
             if(uniqueDays >= 15) badge = "Master Silver";
             if(uniqueDays >= 30) badge = "Elite Diamond";
+            if(unlockedRewards.length > 0) badge = unlockedRewards[unlockedRewards.length - 1];
             document.getElementById('badgeStatusText').innerText = badge;
 
             let aiText = "Kondisi keuangan stabil. Pertahankan rasio tabungan Anda bulan ini.";
@@ -1508,7 +1631,7 @@
         }
 
         function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, wallets, vaults, creditCards, monthlyBudget, wishlists, assets, categories, subscriptions, familyName, savedPin }));
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, wallets, vaults, creditCards, monthlyBudget, wishlists, assets, categories, subscriptions, familyName, savedPin, unlockedRewards }));
             const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "backup.json");
             document.body.appendChild(dl); dl.click(); dl.remove();
         }
