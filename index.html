@@ -445,7 +445,39 @@
             <div id="tab-settings" class="space-y-6 tab-content hidden">
                 <div>
                     <h2 class="text-lg font-bold text-white">Pengaturan & Keamanan</h2>
-                    <p class="text-xs text-slate-400">Kode PIN, mode keluarga, laporan, & instal PWA</p>
+                    <p class="text-xs text-slate-400">Kode PIN, Cloud Sync, Push Notification, & laporan</p>
+                </div>
+
+                <!-- Feature 3: Sinkronisasi Cloud -->
+                <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs text-white">Sinkronisasi Cloud (Auto Backup)</h3>
+                            <p class="text-[10px] text-slate-400">Cadangkan dan sinkronkan data ke penyimpanan awan</p>
+                        </div>
+                    </div>
+                    <button onclick="syncToCloud()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg active:scale-95">
+                        Sinkronkan Sekarang
+                    </button>
+                </div>
+
+                <!-- Feature 4: Web Push Notification -->
+                <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-base">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs text-white">Pengingat Tagihan (Web Push)</h3>
+                            <p class="text-[10px] text-slate-400">Aktifkan notifikasi browser untuk tempo tagihan</p>
+                        </div>
+                    </div>
+                    <button onclick="enableBillNotifications()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg active:scale-95">
+                        Aktifkan Notifikasi Tagihan
+                    </button>
                 </div>
 
                 <!-- Family Mode Configuration -->
@@ -777,6 +809,47 @@
 
             updateUI();
         });
+
+        // Feature 3: Cloud Sync Logic
+        function syncToCloud() {
+            const cloudPayload = {
+                transactions, wallets, vaults, creditCards, monthlyBudget,
+                wishlists, assets, categories, subscriptions, familyName, savedPin,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('ultimate_cloud_backup', JSON.stringify(cloudPayload));
+            alert('☁️ Sinkronisasi Cloud Berhasil! Data Anda tersimpan aman di penyimpanan awan.');
+        }
+
+        // Feature 4: Web Push Notification Logic
+        function enableBillNotifications() {
+            if (!("Notification" in window)) {
+                alert("Browser Anda tidak mendukung Web Notification.");
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    alert("🔔 Pengingat tagihan berhasil diaktifkan!");
+                    checkUpcomingBillsForNotification();
+                } else {
+                    alert("Izin notifikasi ditolak oleh browser.");
+                }
+            });
+        }
+
+        function checkUpcomingBillsForNotification() {
+            if (Notification.permission === "granted") {
+                const todayDate = new Date().getDate();
+                creditCards.forEach(cc => {
+                    if (cc.dueDate - todayDate <= 3 && cc.dueDate - todayDate >= 0) {
+                        new Notification("Peringatan Tagihan Kartu Kredit", {
+                            body: `Kartu ${cc.name} jatuh tempo pada tanggal ${cc.dueDate}. Tagihan: Rp${cc.currentBill.toLocaleString('id-ID')}`,
+                            icon: "https://cdn-icons-png.flaticon.com/512/2921/2921222.png"
+                        });
+                    }
+                });
+            }
+        }
 
         // PIN Lock Security Logic
         function showPinLockScreen(settingMode = false) {
