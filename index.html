@@ -2,7 +2,7 @@
 <html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Finance PRO — Elite Ultimate Edition</title>
     <!-- PWA Dynamic Manifest Link -->
     <link rel="manifest" id="pwaManifestLink">
@@ -70,6 +70,16 @@
             100% { transform: scale(0.95); opacity: 0.8; }
         }
         .mic-active { animation: pulse-ring 1.5s infinite; }
+        
+        /* Animasi Bottom Sheet */
+        @keyframes slide-up {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         @media print {
             body { background: white !important; color: black !important; }
             .no-print { display: none !important; }
@@ -426,7 +436,7 @@
 
         </main>
 
-        <!-- Modern Floating Glass Navigation Bar (Without AI) -->
+        <!-- Modern Floating Glass Navigation Bar -->
         <nav class="fixed bottom-4 left-4 right-4 max-w-[calc(28rem-2rem)] mx-auto nav-blur border border-white/10 px-4 py-3 flex justify-between items-center z-40 rounded-3xl shadow-2xl no-print">
             <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-indigo-400 flex flex-col items-center gap-1 transition p-2">
                 <i class="fa-solid fa-border-all text-sm"></i>
@@ -450,19 +460,96 @@
 
     </div>
 
-    <!-- Modals -->
-    <div id="transactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex justify-center items-center z-50 p-4">
-        <div class="glass-card p-6 rounded-3xl w-full max-w-sm shadow-2xl space-y-4 border border-white/10">
-            <div class="flex justify-between items-center"><h3 class="font-bold text-sm tracking-tight text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-indigo-400"></i> Catat Transaksi</h3><button onclick="closeTransactionModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
-            <form onsubmit="addTransaction(event)" class="space-y-3">
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Tipe</label><select id="type" class="w-full custom-input rounded-xl p-3 text-xs font-bold focus:outline-none"><option value="pemasukan">Pemasukan</option><option value="pengeluaran">Pengeluaran</option></select></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Dompet / Rekening</label><select id="txWalletId" class="w-full custom-input rounded-xl p-3 text-xs font-bold focus:outline-none"></select></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Keterangan</label><input type="text" id="description" required placeholder="Contoh: Gaji, Makan Siang" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Jumlah (Rp)</label><input type="number" id="amount" required min="1" placeholder="Contoh: 50000" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <div><label class="text-[10px] font-extrabold text-slate-400 uppercase block mb-1">Kategori</label><select id="category" class="w-full custom-input rounded-xl p-3 text-xs font-bold focus:outline-none"></select></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Tanggal</label><input type="date" id="txDate" required class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg active:scale-95 mt-2">Simpan</button>
-            </form>
+    <!-- Modal Transaksi Baru (Bottom Sheet Style) -->
+    <div id="transactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex justify-center items-end sm:items-center z-50 transition-opacity">
+        <div class="bg-darker w-full max-w-md h-[95vh] sm:h-[85vh] rounded-t-[32px] sm:rounded-3xl shadow-2xl relative flex flex-col border border-slate-800 animate-slide-up overflow-hidden">
+            
+            <!-- Header Sticky -->
+            <div class="flex justify-between items-center p-6 pb-4 border-b border-slate-800/80 sticky top-0 bg-darker z-20">
+                <div>
+                    <h3 class="font-extrabold text-lg text-white">Tambah Transaksi</h3>
+                    <p class="text-[11px] text-slate-400">Catat uang masuk, keluar, atau transfer dengan cepat.</p>
+                </div>
+                <button onclick="closeTransactionModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex justify-center items-center hover:bg-slate-700 hover:text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Area Konten (Scrollable) -->
+            <div class="overflow-y-auto flex-grow pb-32 no-scrollbar relative z-10">
+                
+                <!-- Tipe Transaksi (Tabs) -->
+                <div class="p-6 pb-2">
+                    <div class="flex bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800">
+                        <button id="tab-pengeluaran" onclick="setTxType('pengeluaran')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-slate-800 text-rose-400 shadow-sm border border-slate-700/50 transition">Pengeluaran</button>
+                        <button id="tab-pemasukan" onclick="setTxType('pemasukan')" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition">Pemasukan</button>
+                        <button onclick="alert('Fitur transfer antar dompet segera hadir!')" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition">Transfer</button>
+                    </div>
+                </div>
+
+                <!-- Tampilan Nominal -->
+                <div class="px-6 py-4 text-center space-y-1">
+                    <div class="text-[11px] text-slate-400 font-semibold flex items-center justify-center gap-1.5 mb-1" id="tx-flow-text">
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Nominal Pengeluaran
+                    </div>
+                    <h1 id="tx-display-amount" class="text-5xl font-extrabold text-white tracking-tight">Rp0</h1>
+                </div>
+
+                <!-- Keypad Kustom (Numpad) -->
+                <div class="px-8 pb-8 grid grid-cols-3 gap-3">
+                    <button onclick="inputTxAmount(1)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">1</button>
+                    <button onclick="inputTxAmount(2)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">2</button>
+                    <button onclick="inputTxAmount(3)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">3</button>
+                    <button onclick="inputTxAmount(4)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">4</button>
+                    <button onclick="inputTxAmount(5)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">5</button>
+                    <button onclick="inputTxAmount(6)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">6</button>
+                    <button onclick="inputTxAmount(7)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">7</button>
+                    <button onclick="inputTxAmount(8)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">8</button>
+                    <button onclick="inputTxAmount(9)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">9</button>
+                    <button onclick="inputTxAmount('000')" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-lg font-bold text-slate-300 transition active:scale-95">000</button>
+                    <button onclick="inputTxAmount(0)" class="py-3 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-[20px] text-xl font-bold text-white transition active:scale-95">0</button>
+                    <button onclick="deleteTxAmount()" class="py-3 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 rounded-[20px] text-xl font-bold text-rose-400 transition active:scale-95 flex justify-center items-center"><i class="fa-solid fa-delete-left"></i></button>
+                </div>
+
+                <div class="h-1.5 w-full bg-slate-900/60 mb-6"></div>
+
+                <div class="px-6 space-y-7">
+                    <!-- Pilihan Tanggal -->
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-300 mb-3"><i class="fa-regular fa-calendar mr-1"></i> Tanggal & Waktu</h4>
+                        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1" id="tx-date-chips">
+                            <button onclick="setTxDate('today')" id="date-today" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-indigo-600 border-indigo-500 text-white">Hari ini</button>
+                            <button onclick="setTxDate('yesterday')" id="date-yesterday" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500">Kemarin</button>
+                            <input type="date" id="txDateCustom" onchange="setTxDate('custom')" class="bg-slate-900 border-slate-700 text-slate-300 text-xs font-bold rounded-xl px-3 outline-none focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <!-- Kategori -->
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-300 mb-3"><i class="fa-solid fa-layer-group mr-1"></i> Pilih Kategori</h4>
+                        <div class="flex flex-wrap gap-2" id="tx-category-chips"></div>
+                    </div>
+
+                    <!-- Dompet -->
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-300 mb-3"><i class="fa-solid fa-wallet mr-1"></i> Pilih Dompet</h4>
+                        <div class="flex flex-wrap gap-2" id="tx-wallet-chips"></div>
+                    </div>
+
+                    <!-- Catatan -->
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-300 mb-3">Catatan</h4>
+                        <textarea id="tx-notes" rows="2" placeholder="Opsional, boleh dikosongkan. Contoh: makan siang, bayar listrik..." class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-4 text-xs font-medium text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Simpan Sticky di Bawah -->
+            <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-[#030712] via-[#030712] to-transparent z-20 pt-12">
+                <button onclick="saveNewTransaction()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-4 rounded-2xl transition shadow-lg shadow-emerald-900/30 active:scale-95 text-sm flex justify-center items-center gap-2">
+                    Simpan Transaksi
+                </button>
+            </div>
         </div>
     </div>
 
@@ -586,9 +673,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('budgetLimit').value = monthlyBudget;
-            document.getElementById('txDate').valueAsDate = new Date();
-            populateCategories();
-            populateWalletsDropdown();
+            populateFilterCategories();
             updateUI();
         });
 
@@ -624,7 +709,6 @@
         function closeVaultModal() { document.getElementById('vaultModal').classList.add('hidden'); }
         function openCreditCardModal() { document.getElementById('creditCardModal').classList.remove('hidden'); }
         function closeCreditCardModal() { document.getElementById('creditCardModal').classList.add('hidden'); }
-        function openTransactionModal() { document.getElementById('transactionModal').classList.remove('hidden'); }
         function closeTransactionModal() { document.getElementById('transactionModal').classList.add('hidden'); }
         function openWalletModal() { document.getElementById('walletModal').classList.remove('hidden'); }
         function closeWalletModal() { document.getElementById('walletModal').classList.add('hidden'); }
@@ -637,26 +721,169 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
         }
 
-        function populateCategories() {
-            const selectEl = document.getElementById('category');
+        function populateFilterCategories() {
             const filterEl = document.getElementById('filterCategorySelect');
-            if(!selectEl || !filterEl) return;
-            selectEl.innerHTML = '';
+            if(!filterEl) return;
             filterEl.innerHTML = '<option value="ALL">Semua Kategori</option>';
             categories.forEach(cat => {
-                const opt = document.createElement('option'); opt.value = cat; opt.innerText = cat; selectEl.appendChild(opt);
                 const optF = document.createElement('option'); optF.value = cat; optF.innerText = cat; filterEl.appendChild(optF);
             });
         }
 
-        function populateWalletsDropdown() {
-            const selectEl = document.getElementById('txWalletId');
-            if(!selectEl) return;
-            selectEl.innerHTML = '';
-            wallets.forEach(w => {
-                const opt = document.createElement('option'); opt.value = w.id; opt.innerText = w.name; selectEl.appendChild(opt);
+        // ==========================================
+        // STATE & LOGIC UNTUK BOTTOM SHEET TRANSAKSI
+        // ==========================================
+        let txModalState = {
+            type: 'pengeluaran',
+            amount: "0",
+            dateType: 'today',
+            customDate: new Date().toISOString().split('T')[0],
+            category: '',
+            walletId: '',
+            notes: ''
+        };
+
+        function setTxType(type) {
+            txModalState.type = type;
+            const tabPengeluaran = document.getElementById('tab-pengeluaran');
+            const tabPemasukan = document.getElementById('tab-pemasukan');
+            
+            tabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition";
+            tabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition";
+            
+            if (type === 'pengeluaran') {
+                tabPengeluaran.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-slate-800 text-rose-400 shadow-sm border border-slate-700/50 transition";
+                document.getElementById('tx-flow-text').innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span> Uang Keluar dari dompet pilihan`;
+            } else {
+                tabPemasukan.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-slate-800 text-emerald-400 shadow-sm border border-slate-700/50 transition";
+                document.getElementById('tx-flow-text').innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Uang Masuk ke dompet pilihan`;
+            }
+        }
+
+        function inputTxAmount(val) {
+            if (txModalState.amount === "0" && val !== "000") {
+                txModalState.amount = val.toString();
+            } else if (txModalState.amount !== "0") {
+                if(txModalState.amount.length < 12) txModalState.amount += val.toString();
+            }
+            updateTxAmountDisplay();
+        }
+
+        function deleteTxAmount() {
+            if (txModalState.amount.length > 1) {
+                txModalState.amount = txModalState.amount.slice(0, -1);
+            } else {
+                txModalState.amount = "0";
+            }
+            updateTxAmountDisplay();
+        }
+
+        function updateTxAmountDisplay() {
+            const num = parseInt(txModalState.amount) || 0;
+            document.getElementById('tx-display-amount').innerText = "Rp" + num.toLocaleString('id-ID');
+        }
+
+        function setTxDate(type) {
+            txModalState.dateType = type;
+            document.getElementById('date-today').className = "whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-slate-900 border-slate-700 text-slate-400";
+            document.getElementById('date-yesterday').className = "whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-slate-900 border-slate-700 text-slate-400";
+            
+            if(type === 'today') {
+                document.getElementById('date-today').className = "whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-indigo-600 border-indigo-500 text-white";
+                txModalState.customDate = new Date().toISOString().split('T')[0];
+            } else if (type === 'yesterday') {
+                document.getElementById('date-yesterday').className = "whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold border transition bg-indigo-600 border-indigo-500 text-white";
+                let d = new Date(); d.setDate(d.getDate() - 1);
+                txModalState.customDate = d.toISOString().split('T')[0];
+            } else {
+                txModalState.customDate = document.getElementById('txDateCustom').value;
+            }
+        }
+
+        function initTxModalUI() {
+            const walletCont = document.getElementById('tx-wallet-chips');
+            walletCont.innerHTML = '';
+            wallets.forEach((w, idx) => {
+                if(!txModalState.walletId && idx === 0) txModalState.walletId = w.id;
+                const isSel = txModalState.walletId === w.id;
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${isSel ? 'bg-indigo-600 border-indigo-500 text-white' : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'}`;
+                btn.innerHTML = `<i class="fa-solid fa-wallet"></i> ${w.name}`;
+                btn.onclick = () => { txModalState.walletId = w.id; initTxModalUI(); };
+                walletCont.appendChild(btn);
+            });
+
+            const catCont = document.getElementById('tx-category-chips');
+            catCont.innerHTML = '';
+            categories.forEach((c, idx) => {
+                if(!txModalState.category && idx === 0) txModalState.category = c;
+                const isSel = txModalState.category === c;
+                
+                let icon = 'fa-tag';
+                if(c.toLowerCase().includes('makan')) icon = 'fa-utensils';
+                if(c.toLowerCase().includes('transport')) icon = 'fa-car';
+                if(c.toLowerCase().includes('belanja')) icon = 'fa-bag-shopping';
+                if(c.toLowerCase().includes('hibur')) icon = 'fa-gamepad';
+                if(c.toLowerCase().includes('tagih')) icon = 'fa-file-invoice-dollar';
+                if(c.toLowerCase().includes('invest')) icon = 'fa-arrow-trend-up';
+
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${isSel ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-900/20' : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500'}`;
+                btn.innerHTML = `<i class="fa-solid ${icon}"></i> ${c}`;
+                btn.onclick = () => { txModalState.category = c; initTxModalUI(); };
+                catCont.appendChild(btn);
             });
         }
+
+        function openTransactionModal() {
+            txModalState.amount = "0";
+            document.getElementById('tx-notes').value = "";
+            document.getElementById('txDateCustom').valueAsDate = new Date();
+            txModalState.walletId = wallets.length > 0 ? wallets[0].id : '';
+            txModalState.category = categories.length > 0 ? categories[0] : '';
+            
+            setTxType('pengeluaran');
+            setTxDate('today');
+            updateTxAmountDisplay();
+            initTxModalUI();
+            
+            document.getElementById('transactionModal').classList.remove('hidden');
+        }
+
+        function saveNewTransaction() {
+            const amountNum = parseInt(txModalState.amount) || 0;
+            if(amountNum <= 0) {
+                alert('Ups! Nominal transaksi tidak boleh kosong (Rp0).');
+                return;
+            }
+            
+            const description = document.getElementById('tx-notes').value.trim() || txModalState.category;
+            const formattedDate = new Date(txModalState.customDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            transactions.push({ 
+                id: Date.now(), 
+                type: txModalState.type, 
+                walletId: txModalState.walletId, 
+                description: description, 
+                amount: amountNum, 
+                category: txModalState.category, 
+                rawDate: txModalState.customDate, 
+                date: formattedDate 
+            });
+
+            wallets = wallets.map(w => {
+                if(w.id === txModalState.walletId) {
+                    w.balance = txModalState.type === 'pemasukan' ? w.balance + amountNum : w.balance - amountNum;
+                }
+                return w;
+            });
+
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
+            saveAndRefresh(); 
+            closeTransactionModal();
+        }
+        // ==========================================
+
 
         function addVault(e) {
             e.preventDefault();
@@ -809,34 +1036,14 @@
             const balance = parseFloat(document.getElementById('walletBalance').value) || 0;
             wallets.push({ id: 'w_' + Date.now(), name, balance });
             localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
-            closeWalletModal(); e.target.reset(); populateWalletsDropdown(); updateUI();
+            closeWalletModal(); e.target.reset(); updateUI();
         }
 
         function deleteWallet(id) {
             if(wallets.length <= 1) { alert('Minimal harus ada 1 akun!'); return; }
             wallets = wallets.filter(w => w.id !== id);
             localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
-            populateWalletsDropdown(); updateUI();
-        }
-
-        function addTransaction(e) {
-            e.preventDefault();
-            const type = document.getElementById('type').value;
-            const walletId = document.getElementById('txWalletId').value;
-            const description = document.getElementById('description').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const category = document.getElementById('category').value;
-            const dateVal = document.getElementById('txDate').value;
-            const formattedDate = new Date(dateVal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-
-            transactions.push({ id: Date.now(), type, walletId, description, amount, category, rawDate: dateVal, date: formattedDate });
-            wallets = wallets.map(w => {
-                if(w.id === walletId) w.balance = type === 'pemasukan' ? w.balance + amount : w.balance - amount;
-                return w;
-            });
-            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
-            saveAndRefresh(); closeTransactionModal(); e.target.reset();
-            document.getElementById('txDate').valueAsDate = new Date();
+            updateUI();
         }
 
         function deleteTransaction(id) {
@@ -1119,7 +1326,7 @@
                 localStorage.clear();
                 transactions = []; vaults = []; creditCards = []; wishlists = []; assets = [];
                 wallets = [{ id: 'cash', name: 'Tunai', balance: 0 }, { id: 'bank', name: 'Bank Utama', balance: 0 }];
-                monthlyBudget = 0; populateWalletsDropdown(); updateUI();
+                monthlyBudget = 0; updateUI();
             }
         }
 
