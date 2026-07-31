@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Finance PRO — Ultimate Next-Gen Edition</title>
+    <title>My Finance PRO — Elite Ultimate Edition</title>
     <!-- PWA Dynamic Manifest Link -->
     <link rel="manifest" id="pwaManifestLink">
     <meta name="theme-color" content="#4f46e5">
@@ -27,8 +27,6 @@
     </script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Tesseract.js for Client-Side OCR -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -96,9 +94,9 @@
                 </div>
                 <div>
                     <h1 class="text-sm font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        MY FINANCE <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/30 font-semibold">NEXT-GEN</span>
+                        MY FINANCE <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/30 font-semibold">ULTIMATE</span>
                     </h1>
-                    <p class="text-[11px] text-slate-400 font-medium">OCR, Subscriptions & FIRE Hub</p>
+                    <p class="text-[11px] text-slate-400 font-medium">Biometric & 50/30/20 Suite</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -117,27 +115,20 @@
             <!-- TAB 1: HOME -->
             <div id="tab-home" class="space-y-6 tab-content">
                 
-                <!-- Voice Note & OCR Quick Scanner Banner -->
-                <div class="grid grid-cols-2 gap-3">
-                    <div onclick="startVoiceRecognition()" class="glass-card p-4 rounded-3xl cursor-pointer hover:border-indigo-500/40 transition group flex flex-col justify-between">
-                        <div id="micBannerIcon" class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xs group-hover:scale-105 transition border border-indigo-500/20 mb-2">
+                <!-- Voice Note Quick Prompt -->
+                <div onclick="startVoiceRecognition()" class="glass-card p-4 rounded-3xl flex items-center justify-between cursor-pointer hover:border-indigo-500/40 transition group">
+                    <div class="flex items-center gap-3.5">
+                        <div id="micBannerIcon" class="w-11 h-11 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm group-hover:scale-105 transition border border-indigo-500/20">
                             <i class="fa-solid fa-microphone-lines"></i>
                         </div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-200">Asisten Suara</h4>
-                            <p class="text-[10px] text-slate-400">"Beli kopi 25rb"</p>
+                            <h4 class="text-xs font-bold text-slate-200">Asisten Suara Pintar (Voice Note)</h4>
+                            <p class="text-[11px] text-slate-400">Contoh: "Beli kopi 25 ribu" atau "Nabung 100rb"</p>
                         </div>
                     </div>
-                    <label class="glass-card p-4 rounded-3xl cursor-pointer hover:border-indigo-500/40 transition group flex flex-col justify-between">
-                        <div class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xs group-hover:scale-105 transition border border-purple-500/20 mb-2">
-                            <i class="fa-solid fa-receipt"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-200">Pindai Struk OCR</h4>
-                            <p class="text-[10px] text-slate-400">Scan foto belanja</p>
-                        </div>
-                        <input type="file" accept="image/*" onchange="scanReceipt(event)" class="hidden">
-                    </label>
+                    <div class="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 group-hover:translate-x-0.5 transition">
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </div>
                 </div>
 
                 <!-- Hero Balance Card -->
@@ -146,7 +137,7 @@
                     <div class="relative z-10">
                         <div class="flex justify-between items-center">
                             <span class="text-[11px] font-bold text-indigo-200 uppercase tracking-widest opacity-90">Total Net Worth</span>
-                            <span class="text-[10px] bg-white/20 text-white px-2.5 py-1 rounded-full font-bold backdrop-blur-md">Next-Gen Sync</span>
+                            <span class="text-[10px] bg-white/20 text-white px-2.5 py-1 rounded-full font-bold backdrop-blur-md">Secure PWA</span>
                         </div>
                         <h3 id="totalNetWorth" class="text-3xl font-extrabold mt-2 tracking-tight text-white">Rp 0</h3>
                     </div>
@@ -196,14 +187,42 @@
                     </div>
                     <div id="homeBillCalendarContainer" class="space-y-2"></div>
                 </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="switchTab('transactions')" class="glass-card p-4 rounded-3xl flex flex-col justify-between cursor-pointer group">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs border border-emerald-500/20">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <span class="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded-md">Masuk</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Pemasukan</span>
+                            <h4 id="totalPemasukanGrid" class="text-sm font-extrabold text-emerald-400 mt-0.5">Rp 0</h4>
+                        </div>
+                    </div>
+                    <div onclick="switchTab('transactions')" class="glass-card p-4 rounded-3xl flex flex-col justify-between cursor-pointer group">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xs border border-rose-500/20">
+                                <i class="fa-solid fa-arrow-trend-down"></i>
+                            </div>
+                            <span class="text-[9px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-500/10 px-2 py-0.5 rounded-md">Keluar</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Pengeluaran</span>
+                            <h4 id="totalPengeluaranGrid" class="text-sm font-extrabold text-rose-400 mt-0.5">Rp 0</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- TAB 2: TRANSACTIONS, SUBSCRIPTIONS & OCR -->
+            <!-- TAB 2: TRANSACTIONS, CSV & CREDIT CARDS -->
             <div id="tab-transactions" class="space-y-6 tab-content hidden">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="text-lg font-bold text-white">Transaksi & Berlangganan</h2>
-                        <p class="text-xs text-slate-400">Mutasi, audit subscription, & kartu kredit</p>
+                        <h2 class="text-lg font-bold text-white">Transaksi & Bank</h2>
+                        <p class="text-xs text-slate-400">Mutasi otomatis, kartu kredit, & dompet</p>
                     </div>
                     <div class="flex gap-2">
                         <label class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-xl text-xs font-bold transition shadow-lg active:scale-95 cursor-pointer" title="Impor CSV Mutasi Bank">
@@ -214,17 +233,6 @@
                             <i class="fa-solid fa-plus mr-1"></i> Catat
                         </button>
                     </div>
-                </div>
-
-                <!-- Subscription Audit Hub Widget -->
-                <div class="glass-card p-5 rounded-3xl space-y-3">
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                            <i class="fa-solid fa-ticket text-purple-400"></i> Audit Layanan Berlangganan (Subscriptions)
-                        </h3>
-                        <button onclick="openSubscriptionModal()" class="text-[10px] text-indigo-400 font-bold hover:underline">+ Tambah Langganan</button>
-                    </div>
-                    <div id="subscriptionListContainer" class="space-y-2 max-h-48 overflow-y-auto"></div>
                 </div>
 
                 <!-- Wallets Section -->
@@ -240,7 +248,7 @@
                 <div class="glass-card p-5 rounded-3xl space-y-3">
                     <div class="flex justify-between items-center">
                         <h3 class="font-bold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                            <i class="fa-solid fa-credit-card text-rose-400"></i> Manajemen Kartu Kredit
+                            <i class="fa-solid fa-credit-card text-rose-400"></i> Manajemen Kartu Kredit & Tagihan
                         </h3>
                         <button onclick="openCreditCardModal()" class="text-[10px] text-indigo-400 font-bold hover:underline">+ Tambah Kartu</button>
                     </div>
@@ -266,43 +274,16 @@
                 </div>
             </div>
 
-            <!-- TAB 3: INVESTMENTS & FIRE CALCULATOR -->
+            <!-- TAB 3: INVESTMENTS -->
             <div id="tab-investments" class="space-y-6 tab-content hidden">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="text-lg font-bold text-white">Portofolio & Kalkulator FIRE</h2>
-                        <p class="text-xs text-slate-400">Aset, dividen, & proyeksi kebebasan finansial</p>
+                        <h2 class="text-lg font-bold text-white">Portofolio Multi-Aset</h2>
+                        <p class="text-xs text-slate-400">Saham, Emas, Kripto, & Reksa Dana</p>
                     </div>
                     <button onclick="openAssetModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-lg active:scale-95">
                         <i class="fa-solid fa-plus mr-1"></i> Aset
                     </button>
-                </div>
-
-                <!-- FIRE Simulator Widget -->
-                <div class="glass-card p-5 rounded-3xl space-y-3 border border-indigo-500/30">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xs">
-                            <i class="fa-solid fa-fire"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-xs text-white">Simulasi FIRE (Financial Independence)</h3>
-                            <p class="text-[10px] text-slate-400">Proyeksi kebebasan finansial berdasarkan 4% Rule</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <div>
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Target Pengeluaran/Tahun (Rp)</label>
-                            <input type="number" id="fireTargetExpense" oninput="calculateFire()" value="60000000" class="w-full custom-input rounded-xl p-2.5 text-xs font-semibold focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Estimasi Return (%)</label>
-                            <input type="number" id="fireReturnRate" oninput="calculateFire()" value="8" step="0.5" class="w-full custom-input rounded-xl p-2.5 text-xs font-semibold focus:outline-none">
-                        </div>
-                    </div>
-                    <div class="bg-black/30 p-3 rounded-2xl border border-white/5 space-y-1 text-xs">
-                        <div class="flex justify-between"><span class="text-slate-400">Target Net Worth FIRE:</span> <strong id="fireTargetNetWorth" class="text-indigo-300">Rp 0</strong></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Status Saat Ini:</span> <strong id="fireStatusResult" class="text-emerald-400">Menghitung...</strong></div>
-                    </div>
                 </div>
 
                 <div class="glass-card p-5 rounded-3xl flex justify-between items-center">
@@ -320,7 +301,7 @@
                     <h3 class="font-bold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-2">
                         <i class="fa-solid fa-chart-line text-indigo-400"></i> Daftar Aset & Portofolio
                     </h3>
-                    <div id="assetListContainer" class="space-y-3 max-h-80 overflow-y-auto"></div>
+                    <div id="assetListContainer" class="space-y-3 max-h-96 overflow-y-auto"></div>
                 </div>
             </div>
 
@@ -445,7 +426,7 @@
 
         </main>
 
-        <!-- Modern Floating Glass Navigation Bar -->
+        <!-- Modern Floating Glass Navigation Bar (Without AI) -->
         <nav class="fixed bottom-4 left-4 right-4 max-w-[calc(28rem-2rem)] mx-auto nav-blur border border-white/10 px-4 py-3 flex justify-between items-center z-40 rounded-3xl shadow-2xl no-print">
             <button onclick="switchTab('home')" id="nav-home" class="nav-btn text-indigo-400 flex flex-col items-center gap-1 transition p-2">
                 <i class="fa-solid fa-border-all text-sm"></i>
@@ -470,7 +451,6 @@
     </div>
 
     <!-- Modals -->
-    <!-- Modal Transaksi -->
     <div id="transactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex justify-center items-center z-50 p-4">
         <div class="glass-card p-6 rounded-3xl w-full max-w-sm shadow-2xl space-y-4 border border-white/10">
             <div class="flex justify-between items-center"><h3 class="font-bold text-sm tracking-tight text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-indigo-400"></i> Catat Transaksi</h3><button onclick="closeTransactionModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
@@ -482,19 +462,6 @@
                 <div><label class="text-[10px] font-extrabold text-slate-400 uppercase block mb-1">Kategori</label><select id="category" class="w-full custom-input rounded-xl p-3 text-xs font-bold focus:outline-none"></select></div>
                 <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Tanggal</label><input type="date" id="txDate" required class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg active:scale-95 mt-2">Simpan</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Subscription Audit -->
-    <div id="subscriptionModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex justify-center items-center z-50 p-4">
-        <div class="glass-card p-6 rounded-3xl w-full max-w-sm shadow-2xl space-y-4 border border-white/10">
-            <div class="flex justify-between items-center"><h3 class="font-bold text-sm tracking-tight text-white flex items-center gap-2"><i class="fa-solid fa-ticket text-purple-400"></i> Tambah Layanan Berlangganan</h3><button onclick="closeSubscriptionModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button></div>
-            <form onsubmit="addSubscription(event)" class="space-y-3">
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Nama Layanan</label><input type="text" id="subName" required placeholder="Contoh: Netflix / Spotify" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Biaya Per Bulan (Rp)</label><input type="number" id="subAmount" required min="1" placeholder="Contoh: 186000" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <div><label class="block text-[10px] font-extrabold text-slate-400 uppercase mb-1">Tanggal Tagihan (Tiap Bulan)</label><input type="number" id="subBillingDate" required min="1" max="31" value="10" class="w-full custom-input rounded-xl p-3 text-xs font-semibold focus:outline-none"></div>
-                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg active:scale-95">Simpan Langganan</button>
             </form>
         </div>
     </div>
@@ -566,12 +533,12 @@
         </div>
     </div>
 
-    <!-- Core Script & Next-Gen Initializer -->
+    <!-- Core Script & PWA Initializer -->
     <script>
         // Setup PWA Dynamic Manifest and Service Worker
         (function initPWA() {
             const manifestObj = {
-                "name": "My Finance PRO Next-Gen",
+                "name": "My Finance PRO Ultimate",
                 "short_name": "FinancePRO",
                 "start_url": "./",
                 "display": "standalone",
@@ -599,22 +566,22 @@
             }
         })();
 
-        let transactions = JSON.parse(localStorage.getItem('nextgen_transactions')) || [];
-        let wallets = JSON.parse(localStorage.getItem('nextgen_wallets')) || [
+        let transactions = JSON.parse(localStorage.getItem('ultimate_transactions')) || [];
+        let wallets = JSON.parse(localStorage.getItem('ultimate_wallets')) || [
             { id: 'cash', name: 'Tunai', balance: 0 },
             { id: 'bank', name: 'Bank Utama', balance: 0 }
         ];
-        let vaults = JSON.parse(localStorage.getItem('nextgen_vaults')) || [
+        let vaults = JSON.parse(localStorage.getItem('ultimate_vaults')) || [
             { id: 'v1', name: 'Dana Darurat', balance: 0 },
             { id: 'v2', name: 'Pos Pajak', balance: 0 }
         ];
-        let creditCards = JSON.parse(localStorage.getItem('nextgen_creditCards')) || [];
-        let subscriptions = JSON.parse(localStorage.getItem('nextgen_subscriptions')) || [];
-        let monthlyBudget = JSON.parse(localStorage.getItem('nextgen_monthlyBudget')) || 0;
-        let wishlists = JSON.parse(localStorage.getItem('nextgen_wishlists')) || [];
-        let assets = JSON.parse(localStorage.getItem('nextgen_assets')) || [];
-        let categories = JSON.parse(localStorage.getItem('nextgen_categories')) || ['Umum', 'Makanan', 'Transportasi', 'Belanja', 'Hiburan', 'Tagihan', 'Investasi'];
+        let creditCards = JSON.parse(localStorage.getItem('ultimate_creditCards')) || [];
+        let monthlyBudget = JSON.parse(localStorage.getItem('ultimate_monthlyBudget')) || 0;
+        let wishlists = JSON.parse(localStorage.getItem('ultimate_wishlists')) || [];
+        let assets = JSON.parse(localStorage.getItem('ultimate_assets')) || [];
+        let categories = JSON.parse(localStorage.getItem('ultimate_categories')) || ['Umum', 'Makanan', 'Transportasi', 'Belanja', 'Hiburan', 'Tagihan', 'Investasi'];
         
+        let netWorthChartInstance = null;
         let expenseChartFull = null;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -653,37 +620,10 @@
             }
         }
 
-        // Client-Side OCR Scanner (Tesseract.js)
-        async function scanReceipt(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            alert('🔍 Memindai teks & nominal dari struk belanja... Mohon tunggu sebentar.');
-            try {
-                const { data: { text } } = await Tesseract.recognize(file, 'ind', {
-                    logger: m => console.log(m)
-                });
-                const numbers = text.match(/\b\d{1,3}(?:\.\d{3})*(?:,\d+)?\b|\b\d+\b/g);
-                let foundAmount = 0;
-                if(numbers) {
-                    const cleaned = numbers.map(n => parseInt(n.replace(/\./g, ''))).filter(n => n > 1000);
-                    if(cleaned.length > 0) foundAmount = Math.max(...cleaned);
-                }
-                document.getElementById('description').value = "Belanja via Struk OCR";
-                if(foundAmount > 0) document.getElementById('amount').value = foundAmount;
-                openTransactionModal();
-                alert('✨ Struk berhasil dipindai! Silakan konfirmasi data transaksi Anda.');
-            } catch(err) {
-                alert('Gagal memindai struk gambar.');
-            }
-            event.target.value = '';
-        }
-
         function openVaultModal() { document.getElementById('vaultModal').classList.remove('hidden'); }
         function closeVaultModal() { document.getElementById('vaultModal').classList.add('hidden'); }
         function openCreditCardModal() { document.getElementById('creditCardModal').classList.remove('hidden'); }
         function closeCreditCardModal() { document.getElementById('creditCardModal').classList.add('hidden'); }
-        function openSubscriptionModal() { document.getElementById('subscriptionModal').classList.remove('hidden'); }
-        function closeSubscriptionModal() { document.getElementById('subscriptionModal').classList.add('hidden'); }
         function openTransactionModal() { document.getElementById('transactionModal').classList.remove('hidden'); }
         function closeTransactionModal() { document.getElementById('transactionModal').classList.add('hidden'); }
         function openWalletModal() { document.getElementById('walletModal').classList.remove('hidden'); }
@@ -718,28 +658,12 @@
             });
         }
 
-        function addSubscription(e) {
-            e.preventDefault();
-            const name = document.getElementById('subName').value.trim();
-            const amount = parseFloat(document.getElementById('subAmount').value) || 0;
-            const billingDate = parseInt(document.getElementById('subBillingDate').value) || 1;
-            subscriptions.push({ id: 'sub_' + Date.now(), name, amount, billingDate });
-            localStorage.setItem('nextgen_subscriptions', JSON.stringify(subscriptions));
-            closeSubscriptionModal(); e.target.reset(); updateUI();
-        }
-
-        function deleteSubscription(id) {
-            subscriptions = subscriptions.filter(s => s.id !== id);
-            localStorage.setItem('nextgen_subscriptions', JSON.stringify(subscriptions));
-            updateUI();
-        }
-
         function addVault(e) {
             e.preventDefault();
             const name = document.getElementById('vaultName').value.trim();
             const balance = parseFloat(document.getElementById('vaultBalance').value) || 0;
             vaults.push({ id: 'vault_' + Date.now(), name, balance });
-            localStorage.setItem('nextgen_vaults', JSON.stringify(vaults));
+            localStorage.setItem('ultimate_vaults', JSON.stringify(vaults));
             closeVaultModal(); e.target.reset(); updateUI();
         }
 
@@ -747,13 +671,13 @@
             const tambah = parseFloat(prompt("Jumlah dana yang ingin dimasukkan ke Vault (Rp):", 0));
             if(!tambah || isNaN(tambah) || tambah <= 0) return;
             vaults = vaults.map(v => { if(v.id === id) v.balance += tambah; return v; });
-            localStorage.setItem('nextgen_vaults', JSON.stringify(vaults));
+            localStorage.setItem('ultimate_vaults', JSON.stringify(vaults));
             updateUI();
         }
 
         function deleteVault(id) {
             vaults = vaults.filter(v => v.id !== id);
-            localStorage.setItem('nextgen_vaults', JSON.stringify(vaults));
+            localStorage.setItem('ultimate_vaults', JSON.stringify(vaults));
             updateUI();
         }
 
@@ -764,13 +688,13 @@
             const currentBill = parseFloat(document.getElementById('ccBill').value) || 0;
             const dueDate = parseInt(document.getElementById('ccDueDate').value) || 1;
             creditCards.push({ id: 'cc_' + Date.now(), name, limit, currentBill, dueDate });
-            localStorage.setItem('nextgen_creditCards', JSON.stringify(creditCards));
+            localStorage.setItem('ultimate_creditCards', JSON.stringify(creditCards));
             closeCreditCardModal(); e.target.reset(); updateUI();
         }
 
         function deleteCreditCard(id) {
             creditCards = creditCards.filter(c => c.id !== id);
-            localStorage.setItem('nextgen_creditCards', JSON.stringify(creditCards));
+            localStorage.setItem('ultimate_creditCards', JSON.stringify(creditCards));
             updateUI();
         }
 
@@ -874,7 +798,7 @@
                 if(w.id === defaultWallet) w.balance = type === 'pemasukan' ? w.balance + amount : w.balance - amount;
                 return w;
             });
-            localStorage.setItem('nextgen_wallets', JSON.stringify(wallets));
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
             saveAndRefresh();
             alert(`✨ VN Tercatat Otomatis!\n📝 "${description}"\n💰 ${formatRupiah(amount)}`);
         }
@@ -884,14 +808,14 @@
             const name = document.getElementById('walletName').value.trim();
             const balance = parseFloat(document.getElementById('walletBalance').value) || 0;
             wallets.push({ id: 'w_' + Date.now(), name, balance });
-            localStorage.setItem('nextgen_wallets', JSON.stringify(wallets));
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
             closeWalletModal(); e.target.reset(); populateWalletsDropdown(); updateUI();
         }
 
         function deleteWallet(id) {
             if(wallets.length <= 1) { alert('Minimal harus ada 1 akun!'); return; }
             wallets = wallets.filter(w => w.id !== id);
-            localStorage.setItem('nextgen_wallets', JSON.stringify(wallets));
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
             populateWalletsDropdown(); updateUI();
         }
 
@@ -910,7 +834,7 @@
                 if(w.id === walletId) w.balance = type === 'pemasukan' ? w.balance + amount : w.balance - amount;
                 return w;
             });
-            localStorage.setItem('nextgen_wallets', JSON.stringify(wallets));
+            localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
             saveAndRefresh(); closeTransactionModal(); e.target.reset();
             document.getElementById('txDate').valueAsDate = new Date();
         }
@@ -922,7 +846,7 @@
                     if(w.id === tx.walletId) w.balance = tx.type === 'pemasukan' ? w.balance - tx.amount : w.balance + tx.amount;
                     return w;
                 });
-                localStorage.setItem('nextgen_wallets', JSON.stringify(wallets));
+                localStorage.setItem('ultimate_wallets', JSON.stringify(wallets));
             }
             transactions = transactions.filter(t => t.id !== id);
             saveAndRefresh();
@@ -931,7 +855,7 @@
         function setBudget(e) {
             e.preventDefault();
             monthlyBudget = parseFloat(document.getElementById('budgetLimit').value);
-            localStorage.setItem('nextgen_monthlyBudget', JSON.stringify(monthlyBudget));
+            localStorage.setItem('ultimate_monthlyBudget', JSON.stringify(monthlyBudget));
             updateUI(); alert('Budget diperbarui!');
         }
 
@@ -945,7 +869,7 @@
             const dividendPerUnit = parseFloat(document.getElementById('assetDividend').value) || 0;
 
             assets.push({ id: Date.now(), category, name, units, buyPrice, currentPrice, dividendPerUnit });
-            localStorage.setItem('nextgen_assets', JSON.stringify(assets));
+            localStorage.setItem('ultimate_assets', JSON.stringify(assets));
             closeAssetModal(); e.target.reset(); updateUI();
         }
 
@@ -970,28 +894,10 @@
             saveAndRefresh();
         }
 
-        function calculateFire() {
-            const annualExpense = parseFloat(document.getElementById('fireTargetExpense').value) || 60000000;
-            const returnRate = (parseFloat(document.getElementById('fireReturnRate').value) || 8) / 100;
-            const targetFireNetWorth = annualExpense * 25; // 4% rule
-            
-            let totalKas = wallets.reduce((acc, w) => acc + w.balance, 0);
-            let totalVault = vaults.reduce((acc, v) => acc + v.balance, 0);
-            let totalInvVal = assets.reduce((acc, a) => acc + (a.units * a.currentPrice), 0);
-            let netWorth = totalKas + totalVault + totalInvVal;
-
-            document.getElementById('fireTargetNetWorth').innerText = formatRupiah(targetFireNetWorth);
-            const progressPct = Math.min((netWorth / targetFireNetWorth) * 100, 100);
-            
-            let statusText = `${progressPct.toFixed(1)}% Menuju FIRE`;
-            if(progressPct >= 100) statusText = '🎉 Selamat! Anda Sudah Mencapai FIRE!';
-            document.getElementById('fireStatusResult').innerText = statusText;
-        }
-
         function saveAndRefresh() {
-            localStorage.setItem('nextgen_transactions', JSON.stringify(transactions));
-            localStorage.setItem('nextgen_monthlyBudget', JSON.stringify(monthlyBudget));
-            localStorage.setItem('nextgen_wishlists', JSON.stringify(wishlists));
+            localStorage.setItem('ultimate_transactions', JSON.stringify(transactions));
+            localStorage.setItem('ultimate_monthlyBudget', JSON.stringify(monthlyBudget));
+            localStorage.setItem('ultimate_wishlists', JSON.stringify(wishlists));
             updateUI();
         }
 
@@ -1009,7 +915,6 @@
                 activeNav.classList.add('text-indigo-400');
             }
             if(tabId === 'home' || tabId === 'settings') updateCharts();
-            if(tabId === 'investments') calculateFire();
         }
 
         function updateUI() {
@@ -1054,40 +959,14 @@
             const billCalCont = document.getElementById('homeBillCalendarContainer');
             if(billCalCont) {
                 billCalCont.innerHTML = '';
-                if(creditCards.length === 0 && subscriptions.length === 0) {
+                if(creditCards.length === 0) {
                     billCalCont.innerHTML = `<p class="text-center text-xs text-slate-500 py-2">Tidak ada jadwal tagihan mendesak.</p>`;
                 } else {
                     creditCards.forEach(cc => {
                         billCalCont.innerHTML += `
                             <div class="flex justify-between items-center bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-xs">
-                                <div><span class="font-bold text-slate-200 block">${cc.name} (CC)</span><span class="text-[10px] text-rose-400 font-semibold">Tagihan: ${formatRupiah(cc.currentBill)}</span></div>
-                                <span class="text-[10px] bg-rose-500/10 text-rose-300 px-2.5 py-1 rounded-lg font-bold">Tempo tgl ${cc.dueDate}</span>
-                            </div>
-                        `;
-                    });
-                    subscriptions.forEach(sub => {
-                        billCalCont.innerHTML += `
-                            <div class="flex justify-between items-center bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-xs">
-                                <div><span class="font-bold text-slate-200 block">${sub.name} (Sub)</span><span class="text-[10px] text-purple-400 font-semibold">Biaya: ${formatRupiah(sub.amount)}/bln</span></div>
-                                <span class="text-[10px] bg-purple-500/10 text-purple-300 px-2.5 py-1 rounded-lg font-bold">Tagihan tgl ${sub.billingDate}</span>
-                            </div>
-                        `;
-                    });
-                }
-            }
-
-            // Subscription Hub Container
-            const subCont = document.getElementById('subscriptionListContainer');
-            if(subCont) {
-                subCont.innerHTML = '';
-                if(subscriptions.length === 0) {
-                    subCont.innerHTML = `<p class="text-center text-xs text-slate-500 py-2">Belum ada langganan terdaftar.</p>`;
-                } else {
-                    subscriptions.forEach(sub => {
-                        subCont.innerHTML += `
-                            <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-2xl border border-slate-800/80 text-xs">
-                                <div><span class="font-bold text-slate-200 block">${sub.name}</span><span class="text-[10px] text-purple-300 font-semibold">${formatRupiah(sub.amount)} / bulan &bull; Tgl ${sub.billingDate}</span></div>
-                                <button onclick="deleteSubscription('${sub.id}')" class="text-slate-500 hover:text-rose-400"><i class="fa-solid fa-xmark"></i></button>
+                                <div><span class="font-bold text-slate-200 block">${cc.name}</span><span class="text-[10px] text-rose-400 font-semibold">Tagihan: ${formatRupiah(cc.currentBill)}</span></div>
+                                <span class="text-[10px] bg-rose-500/10 text-rose-300 px-2.5 py-1 rounded-lg font-bold">Jatuh Tempo tgl ${cc.dueDate}</span>
                             </div>
                         `;
                     });
@@ -1204,7 +1083,6 @@
             }
 
             updateCharts();
-            calculateFire();
         }
 
         function updateCharts() {
@@ -1239,15 +1117,15 @@
         function clearAllData() {
             if(confirm('Hapus seluruh data keuangan?')) {
                 localStorage.clear();
-                transactions = []; vaults = []; creditCards = []; subscriptions = []; wishlists = []; assets = [];
+                transactions = []; vaults = []; creditCards = []; wishlists = []; assets = [];
                 wallets = [{ id: 'cash', name: 'Tunai', balance: 0 }, { id: 'bank', name: 'Bank Utama', balance: 0 }];
                 monthlyBudget = 0; populateWalletsDropdown(); updateUI();
             }
         }
 
         function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, wallets, vaults, creditCards, subscriptions, monthlyBudget, wishlists, assets, categories }));
-            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "my_finance_nextgen_backup.json");
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ transactions, wallets, vaults, creditCards, monthlyBudget, wishlists, assets, categories }));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "my_finance_ultimate_backup.json");
             document.body.appendChild(dl); dl.click(); dl.remove();
         }
     </script>
