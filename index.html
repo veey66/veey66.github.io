@@ -99,7 +99,6 @@
                 <p id="pinLockSubtitle" class="text-xs text-slate-400 mt-1">Masukkan 4 digit PIN keamanan Anda</p>
             </div>
             
-            <!-- PIN Dot Indicators -->
             <div class="flex justify-center gap-4 py-2" id="pinDotsContainer">
                 <div class="w-4 h-4 rounded-full border border-indigo-500/50 bg-slate-900 transition-all" id="dot-0"></div>
                 <div class="w-4 h-4 rounded-full border border-indigo-500/50 bg-slate-900 transition-all" id="dot-1"></div>
@@ -107,7 +106,6 @@
                 <div class="w-4 h-4 rounded-full border border-indigo-500/50 bg-slate-900 transition-all" id="dot-3"></div>
             </div>
 
-            <!-- PIN Numpad Grid -->
             <div class="grid grid-cols-3 gap-3 max-w-[240px] mx-auto">
                 <button onclick="inputPinDigit('1')" class="py-3.5 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-2xl text-lg font-bold text-white transition active:scale-95">1</button>
                 <button onclick="inputPinDigit('2')" class="py-3.5 bg-slate-900/80 border border-slate-800 hover:bg-slate-800 rounded-2xl text-lg font-bold text-white transition active:scale-95">2</button>
@@ -161,7 +159,7 @@
             <!-- TAB 1: HOME -->
             <div id="tab-home" class="space-y-6 tab-content">
                 
-                <!-- AI Financial Coach & Smart Insights Banner -->
+                <!-- AI Financial Coach Banner -->
                 <div class="glass-card p-4 rounded-3xl border border-indigo-500/30 space-y-2 bg-gradient-to-r from-indigo-950/40 to-purple-950/40">
                     <div class="flex items-center gap-2 text-indigo-400 text-xs font-extrabold">
                         <i class="fa-solid fa-robot"></i> AI Financial Coach & Wawasan
@@ -203,6 +201,45 @@
                             <span id="totalVaultHero" class="text-xs font-extrabold text-white mt-0.5 block">Rp 0</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Quick Stats: Pemasukan & Pengeluaran Grid di Home -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="openTransactionModal()" class="glass-card p-4 rounded-3xl flex flex-col justify-between cursor-pointer group hover:border-emerald-500/40 transition">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs border border-emerald-500/20">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+                            <span class="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 rounded-md">+ Masuk</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Pemasukan</span>
+                            <h4 id="totalPemasukanGrid" class="text-sm font-extrabold text-emerald-400 mt-0.5">Rp 0</h4>
+                        </div>
+                    </div>
+                    <div onclick="openTransactionModal()" class="glass-card p-4 rounded-3xl flex flex-col justify-between cursor-pointer group hover:border-rose-500/40 transition">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xs border border-rose-500/20">
+                                <i class="fa-solid fa-arrow-trend-down"></i>
+                            </div>
+                            <span class="text-[9px] font-extrabold text-rose-400 uppercase tracking-wider bg-rose-500/10 px-2 py-0.5 rounded-md">- Keluar</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Pengeluaran</span>
+                            <h4 id="totalPengeluaranGrid" class="text-sm font-extrabold text-rose-400 mt-0.5">Rp 0</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wishlist Preview Widget di Home -->
+                <div class="glass-card p-5 rounded-3xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xs uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-gift text-indigo-400"></i> Target Wishlist
+                        </h3>
+                        <button onclick="switchTab('target')" class="text-[10px] text-indigo-400 font-bold hover:underline">Kelola</button>
+                    </div>
+                    <div id="homeWishlistContainer" class="space-y-2"></div>
                 </div>
 
                 <!-- Wealth Forecasting Widget -->
@@ -734,7 +771,6 @@
             document.getElementById('headerFamilySubtitle').innerText = familyName;
             populateFilterCategories();
             
-            // Check if PIN lock exists
             if(savedPin) {
                 showPinLockScreen(false);
             }
@@ -742,9 +778,7 @@
             updateUI();
         });
 
-        // ==========================================
-        // PIN LOCK SECURITY LOGIC
-        // ==========================================
+        // PIN Lock Security Logic
         function showPinLockScreen(settingMode = false) {
             isSettingPin = settingMode;
             currentEnteredPin = "";
@@ -811,9 +845,7 @@
             }
         }
 
-        // ==========================================
-        // PRIVACY MODE LOGIC
-        // ==========================================
+        // Privacy Mode Logic
         function togglePrivacyMode() {
             isPrivacyMode = !isPrivacyMode;
             const icon = document.getElementById('privacyIcon');
@@ -826,9 +858,7 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
         }
 
-        // ==========================================
-        // SUBSCRIPTIONS LOGIC
-        // ==========================================
+        // Subscriptions Logic
         function openSubscriptionModal() { document.getElementById('subscriptionModal').classList.remove('hidden'); }
         function closeSubscriptionModal() { document.getElementById('subscriptionModal').classList.add('hidden'); }
         
@@ -848,9 +878,7 @@
             updateUI();
         }
 
-        // ==========================================
-        // FAMILY MODE LOGIC
-        // ==========================================
+        // Family Mode Logic
         function saveFamilyMode() {
             const val = document.getElementById('familyNameInput').value.trim();
             familyName = val ? val : 'Mode Personal';
@@ -859,9 +887,7 @@
             alert('✨ Pengaturan profil keluarga berhasil diperbarui!');
         }
 
-        // ==========================================
-        // BOTTOM SHEET TRANSAKSI & TANGGAL
-        // ==========================================
+        // Bottom Sheet Transaksi & Tanggal
         let txModalState = {
             type: 'pengeluaran',
             amount: "0",
@@ -1117,6 +1143,13 @@
             saveAndRefresh();
         }
 
+        function addWishSaving(id) {
+            const tambah = parseFloat(prompt("Tabungan tambahan (Rp):", 0));
+            if(!tambah || isNaN(tambah) || tambah <= 0) return;
+            wishlists = wishlists.map(w => { if(w.id === id) w.saved += tambah; return w; });
+            saveAndRefresh();
+        }
+
         function saveAndRefresh() {
             localStorage.setItem('ultimate_transactions', JSON.stringify(transactions));
             localStorage.setItem('ultimate_monthlyBudget', JSON.stringify(monthlyBudget));
@@ -1175,9 +1208,7 @@
             reader.readAsText(file);
         }
 
-        // ==========================================
-        // UI & CALCULATION ENGINE
-        // ==========================================
+        // UI & Calculation Engine
         function updateUI() {
             let totalIncome = 0, totalExpense = 0;
             transactions.forEach(t => { if(t.type === 'pemasukan') totalIncome += t.amount; else totalExpense += t.amount; });
@@ -1190,6 +1221,8 @@
             document.getElementById('totalNetWorth').innerText = formatRupiah(netWorth);
             document.getElementById('totalKasHero').innerText = formatRupiah(totalKas);
             document.getElementById('totalVaultHero').innerText = formatRupiah(totalVault);
+            document.getElementById('totalPemasukanGrid').innerText = formatRupiah(totalIncome);
+            document.getElementById('totalPengeluaranGrid').innerText = formatRupiah(totalExpense);
 
             let annualNetSavings = (totalIncome - totalExpense) * 12;
             let forecast1 = netWorth + Math.max(annualNetSavings, 0);
@@ -1227,6 +1260,26 @@
             document.getElementById('barWants').style.width = Math.min((wantsExpense / baseIncomeForRatio) * 100, 100) + '%';
             document.getElementById('statSavings').innerText = formatRupiah(totalSavingsAndInv);
             document.getElementById('barSavings').style.width = Math.min((totalSavingsAndInv / baseIncomeForRatio) * 100, 100) + '%';
+
+            // Wishlist Preview di Home
+            const homeWishCont = document.getElementById('homeWishlistContainer');
+            if(homeWishCont) {
+                homeWishCont.innerHTML = '';
+                if(wishlists.length === 0) {
+                    homeWishCont.innerHTML = `<p class="text-center text-xs text-slate-500 py-2">Belum ada target wishlist.</p>`;
+                } else {
+                    wishlists.slice(0, 2).forEach(w => {
+                        const progress = Math.min((w.saved / w.target) * 100, 100);
+                        homeWishCont.innerHTML += `
+                            <div class="bg-slate-900/60 p-3 rounded-2xl border border-slate-800 space-y-1.5 text-xs">
+                                <div class="flex justify-between items-center"><span class="font-bold text-slate-200">${w.name}</span><button onclick="addWishSaving(${w.id})" class="text-[10px] bg-indigo-600 text-white px-2 py-1 rounded-lg font-bold">+ Tabung</button></div>
+                                <div class="flex justify-between text-[10px] text-slate-400"><span>Terkumpul: ${formatRupiah(w.saved)}</span><span>Target: ${formatRupiah(w.target)}</span></div>
+                                <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden"><div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1.5 rounded-full" style="width: ${progress}%"></div></div>
+                            </div>
+                        `;
+                    });
+                }
+            }
 
             const subCont = document.getElementById('subscriptionListContainer');
             if(subCont) {
@@ -1325,6 +1378,26 @@
                         </div>
                     `;
                 });
+            }
+
+            // Full Wishlist List di Tab Target
+            const wishContainer = document.getElementById('wishlistContainer');
+            if(wishContainer) {
+                wishContainer.innerHTML = '';
+                if(wishlists.length === 0) {
+                    wishContainer.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">Belum ada target wishlist.</p>`;
+                } else {
+                    wishlists.forEach(w => {
+                        const progress = Math.min((w.saved / w.target) * 100, 100);
+                        wishContainer.innerHTML += `
+                            <div class="glass-card p-3.5 rounded-2xl space-y-2 text-xs">
+                                <div class="flex justify-between items-center"><span class="font-bold text-slate-200">${w.name}</span><div class="flex gap-2"><button onclick="addWishSaving(${w.id})" class="bg-indigo-600 text-white px-2 py-1 rounded-lg text-[10px] font-bold">+ Tabung</button><button onclick="deleteWishlist(${w.id})" class="text-slate-500 hover:text-rose-400">Hapus</button></div></div>
+                                <div class="flex justify-between text-[10px] text-slate-400 font-semibold"><span>Terkumpul: <strong>${formatRupiah(w.saved)}</strong></span><span>Target: <strong>${formatRupiah(w.target)}</strong></span></div>
+                                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden"><div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full" style="width: ${progress}%"></div></div>
+                            </div>
+                        `;
+                    });
+                }
             }
 
             updateCharts();
